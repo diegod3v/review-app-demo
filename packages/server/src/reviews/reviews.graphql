@@ -1,0 +1,24 @@
+type Review {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateReviewInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateReviewInput {
+  id: Int!
+}
+
+type Query {
+  reviews: [Review]!
+  review(id: Int!): Review
+}
+
+type Mutation {
+  createReview(createReviewInput: CreateReviewInput!): Review!
+  updateReview(updateReviewInput: UpdateReviewInput!): Review!
+  removeReview(id: Int!): Review
+}
