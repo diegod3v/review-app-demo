@@ -18,17 +18,20 @@ export class ReviewsResolver {
   }
 
   @Query('review')
-  findOne(@Args('id') id: number) {
+  findOne(@Args('id') id: string) {
     return this.reviewsService.findOne(id);
   }
 
   @Mutation('updateReview')
-  update(@Args('updateReviewInput') updateReviewInput: UpdateReviewInput) {
-    return this.reviewsService.update(updateReviewInput.id, updateReviewInput);
+  update(
+    @Args('id') id: string,
+    @Args('updateReviewInput') updateReviewInput: UpdateReviewInput,
+  ) {
+    return this.reviewsService.update(id, updateReviewInput);
   }
 
   @Mutation('removeReview')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.reviewsService.remove(id);
   }
 }

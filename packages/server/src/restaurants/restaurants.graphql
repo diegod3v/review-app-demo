@@ -1,24 +1,27 @@
 type Restaurant {
-  # Example field (placeholder)
-  exampleField: Int
+  id: ID!
+  name: String!
+  reviews: [Review]
 }
 
 input CreateRestaurantInput {
-  # Example field (placeholder)
-  exampleField: Int
+  name: String!
 }
 
 input UpdateRestaurantInput {
-  id: Int!
+  name: String!
 }
 
 type Query {
   restaurants: [Restaurant]!
-  restaurant(id: Int!): Restaurant
+  restaurant(id: ID!): Restaurant
 }
 
 type Mutation {
   createRestaurant(createRestaurantInput: CreateRestaurantInput!): Restaurant!
-  updateRestaurant(updateRestaurantInput: UpdateRestaurantInput!): Restaurant!
-  removeRestaurant(id: Int!): Restaurant
+  updateRestaurant(
+    id: ID!
+    updateRestaurantInput: UpdateRestaurantInput!
+  ): Restaurant!
+  removeRestaurant(id: ID!): Restaurant
 }

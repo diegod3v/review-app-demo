@@ -12,15 +12,15 @@ export class RestaurantsService {
     return `This action returns all restaurants`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} restaurant`;
   }
 
-  update(id: number, updateRestaurantInput: UpdateRestaurantInput) {
+  update(id: string, updateRestaurantInput: UpdateRestaurantInput) {
     return `This action updates a #${id} restaurant`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} restaurant`;
   }
 }
