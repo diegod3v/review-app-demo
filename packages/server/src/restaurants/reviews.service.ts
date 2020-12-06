@@ -8,7 +8,7 @@ export class ReviewsService {
     return 'This action adds a new review';
   }
 
-  findAll() {
+  findAll(filters?: any) {
     return `This action returns all reviews`;
   }
 

@@ -1,3 +1,5 @@
+scalar Date
+
 type Review {
   id: ID!
   date: Date!

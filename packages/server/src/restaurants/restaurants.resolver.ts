@@ -1,11 +1,22 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { RestaurantsService } from './restaurants.service';
 import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
+import { ReviewsService } from './reviews.service';
 
 @Resolver('Restaurant')
 export class RestaurantsResolver {
-  constructor(private readonly restaurantsService: RestaurantsService) {}
+  constructor(
+    private readonly restaurantsService: RestaurantsService,
+    private readonly reviewsService: ReviewsService,
+  ) {}
 
   @Mutation('createRestaurant')
   create(
@@ -22,6 +33,12 @@ export class RestaurantsResolver {
   @Query('restaurant')
   findOne(@Args('id') id: string) {
     return this.restaurantsService.findOne(id);
+  }
+
+  @ResolveField('reviews')
+  async getReviews(@Parent() restaurant) {
+    const { id } = restaurant;
+    return this.reviewsService.findAll({ restaurantId: id });
   }
 
   @Mutation('updateRestaurant')
