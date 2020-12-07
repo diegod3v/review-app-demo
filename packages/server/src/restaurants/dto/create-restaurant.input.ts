@@ -17,5 +17,5 @@ export class CreateRestaurantInput {
   @Field()
   website: string;
   @Field()
-  kitchen: string;
+  thumbnail: string;
 }

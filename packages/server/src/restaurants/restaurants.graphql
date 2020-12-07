@@ -4,10 +4,9 @@ type Restaurant {
   description: String!
   phone: String
   website: String
-  kitchen: String
-  tags: [String]
+  thumbnail: String!
   reviewsCount: Int!
-  rateAverage: Int!
+  rateAverage: Float!
   reviews: [Review]
 }
 
@@ -16,7 +15,7 @@ input CreateRestaurantInput {
   description: String
   phone: String
   website: String
-  kitchen: String
+  thumbnail: String!
 }
 
 input UpdateRestaurantInput {
@@ -24,7 +23,7 @@ input UpdateRestaurantInput {
   description: String
   phone: String
   website: String
-  kitchen: String
+  thumbnail: String
 }
 
 type Query {
@@ -33,15 +32,10 @@ type Query {
 }
 
 type Mutation {
-  createRestaurant(
-    createRestaurantInput: CreateRestaurantInput!
-    tagsIds: [ID]
-  ): Restaurant!
+  createRestaurant(createRestaurantInput: CreateRestaurantInput!): Restaurant!
   updateRestaurant(
     id: ID!
     updateRestaurantInput: UpdateRestaurantInput!
   ): Restaurant!
   removeRestaurant(id: ID!): Restaurant
-  createTag(createTagInput: String): String
-  removeTag(id: ID!): String
 }

@@ -11,7 +11,7 @@ export class CreateRestaurantInput {
     description?: string;
     phone?: string;
     website?: string;
-    kitchen?: string;
+    thumbnail: string;
 }
 
 export class UpdateRestaurantInput {
@@ -19,7 +19,7 @@ export class UpdateRestaurantInput {
     description?: string;
     phone?: string;
     website?: string;
-    kitchen?: string;
+    thumbnail?: string;
 }
 
 export class CreateReviewInput {
@@ -45,11 +45,10 @@ export class UpdateUserInput {
 export class Restaurant {
     id: string;
     name: string;
-    description?: string;
+    description: string;
     phone?: string;
     website?: string;
-    kitchen?: string;
-    tags?: string[];
+    thumbnail: string;
     reviewsCount: number;
     rateAverage: number;
     reviews?: Review[];
@@ -72,15 +71,11 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract createRestaurant(createRestaurantInput: CreateRestaurantInput, tagsIds?: string[]): Restaurant | Promise<Restaurant>;
+    abstract createRestaurant(createRestaurantInput: CreateRestaurantInput): Restaurant | Promise<Restaurant>;
 
     abstract updateRestaurant(id: string, updateRestaurantInput: UpdateRestaurantInput): Restaurant | Promise<Restaurant>;
 
     abstract removeRestaurant(id: string): Restaurant | Promise<Restaurant>;
-
-    abstract createTag(createTagInput?: string): string | Promise<string>;
-
-    abstract removeTag(id: string): string | Promise<string>;
 
     abstract createReview(restaurantId: string, createReviewInput: CreateReviewInput): Review | Promise<Review>;
 

@@ -1,11 +1,12 @@
 import { GetServerSideProps } from "next";
+import NavBarLayout from "../components/NavBarLayout";
 import RestaurantListItem from "../components/RestaurantListItem";
 import RestaurantSlideSection from "../components/RestaurantSlideSection";
 import API from "../shared/api";
 
 function Home({ restaurants }) {
   return (
-    <>
+    <NavBarLayout>
       <RestaurantSlideSection restaurants={restaurants} title={"Los mejores"} />
       <RestaurantSlideSection
         restaurants={restaurants}
@@ -16,17 +17,21 @@ function Home({ restaurants }) {
         restaurants={restaurants}
         title={"Italianos de siempre"}
       />
-      {restaurants.map((info, i) => (
-        <RestaurantListItem
-          key={info.id}
-          image={i}
-          name={info.name}
-          kitchen={info.kitchen}
-          rate={info.rateAverage}
-          reviewsCount={info.reviewsCount}
-        />
-      ))}
-    </>
+      <section className="container mx-auto my-5">
+        <div className="flex flex-col space-y-2 px-4">
+          {restaurants.map((info, i) => (
+            <RestaurantListItem
+              key={info.id}
+              id={info.id}
+              image={i}
+              name={info.name}
+              rate={info.rateAverage}
+              reviewsCount={info.reviewsCount}
+            />
+          ))}
+        </div>
+      </section>
+    </NavBarLayout>
   );
 }
 

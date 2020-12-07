@@ -3,19 +3,19 @@ scalar Date
 type Review {
   id: ID!
   date: Date!
-  comment: Int!
+  comment: String!
   rate: Int!
 }
 
 input CreateReviewInput {
   date: Date!
-  comment: Int!
+  comment: String!
   rate: Int!
 }
 
 input UpdateReviewInput {
   date: Date!
-  comment: Int!
+  comment: String!
   rate: Int!
 }
 

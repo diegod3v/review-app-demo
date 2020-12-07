@@ -49,13 +49,13 @@ export class ReviewsService {
       .leftJoin(
         'review.restaurant',
         'restaurant',
-        'review.restaurantId = :restaurantId',
+        'review.restaurant = :restaurantId',
         { restaurantId },
       )
       .select('AVG(review.rate)', 'avg')
       .getRawOne();
 
-    return avg ? avg.toFixed(1) : 0;
+    return avg ? Number(avg).toFixed(1) : 0;
   }
 
   findOne(id: string) {

@@ -1,38 +1,46 @@
-import classnames from "classnames";
+import Link from "next/link";
 import Rate from "../components/Rate";
+import { RESTAURANTS_ROUTE } from "../constants/routes";
 
 type Props = {
+  id: string;
   name: string;
   image: string;
-  kitchen: string;
   rate: number;
   reviewsCount: number;
 };
 
 function RestaurantListItem({
+  id,
   name,
   image,
-  kitchen = "Mexican",
+  rate,
   reviewsCount = 100,
 }: Props) {
   return (
     <article className="flex">
       <div className="w-4/12">
-        <div className="relative mb-1 pb-916">
-          <img
-            className="absolute h-full w-full object-cover rounded-xl"
-            src={`https://picsum.photos/600/400?random=${image}`}
-            alt="dummy"
-          />
-        </div>
+        <Link href={`${RESTAURANTS_ROUTE}/${id}`}>
+          <a>
+            <div className="relative mb-1 pb-916">
+              <img
+                className="absolute h-full w-full object-cover rounded-xl"
+                src={`https://picsum.photos/600/400?random=${image}`}
+                alt="restaurant"
+              />
+            </div>
+          </a>
+        </Link>
       </div>
       <div>
         <div className="pl-3 py-3">
-          <h1 className="font-semibold">{name}</h1>
-          <p className="text-xs text-gray-500 mb-3">{kitchen}</p>
-          <Rate rate={3} size={"small"} />
+          <Link href={`${RESTAURANTS_ROUTE}/${id}`}>
+            <a>
+              <h1 className="font-semibold">{name}</h1>
+            </a>
+          </Link>
+          <Rate rate={rate} size={"small"} />
           <small>{reviewsCount} reviews</small>
-          <p className="text-xs mt-3">Hacker Av. #123, San Francisco</p>
         </div>
       </div>
     </article>

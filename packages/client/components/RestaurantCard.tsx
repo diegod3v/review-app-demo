@@ -1,7 +1,10 @@
 import classnames from "classnames";
+import { RESTAURANTS_ROUTE } from "../constants/routes";
 import Rate from "./Rate";
+import Link from "next/link";
 
 type Props = {
+  id: string;
   name: string;
   image: any;
   rate: number;
@@ -9,23 +12,31 @@ type Props = {
   reviewsCount: number;
 };
 
-function RestaurantCard({ name, image, rate, reviewsCount, ratio }: Props) {
+function RestaurantCard({ id, name, image, rate, reviewsCount, ratio }: Props) {
   return (
     <article>
-      <div
-        className={classnames("relative mb-1", {
-          "pb-full": ratio === "square",
-          "pb-169": ratio === "wide",
-        })}
-      >
-        <img
-          className="absolute h-full w-full object-cover rounded-xl"
-          src={`https://picsum.photos/600/400?random=${image}`}
-          alt="dummy"
-        />
-      </div>
+      <Link href={`${RESTAURANTS_ROUTE}/${id}`}>
+        <a>
+          <div
+            className={classnames("relative mb-1", {
+              "pb-full": ratio === "square",
+              "pb-169": ratio === "wide",
+            })}
+          >
+            <img
+              className="absolute h-full w-full object-cover rounded-xl"
+              src={`https://picsum.photos/600/400?random=${image}`}
+              alt="restaurant"
+            />
+          </div>
+        </a>
+      </Link>
       <div className="pl-2">
-        <h1 className="font-semibold mb-2">{name}</h1>
+        <Link href={`${RESTAURANTS_ROUTE}/${id}`}>
+          <a>
+            <h1 className="font-semibold mb-2">{name}</h1>
+          </a>
+        </Link>
         <Rate rate={rate} size={"small"} />
         <small>{reviewsCount} reviews</small>
       </div>

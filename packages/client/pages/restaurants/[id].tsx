@@ -3,6 +3,7 @@ import Rate from "../../components/Rate";
 import API from "../../shared/api";
 import { FaPhoneAlt, FaGlobeAmericas } from "react-icons/fa";
 import ReviewPost from "../../components/ReviewPost";
+import CommentComposer from "../../components/CommentComposer";
 
 function RestaurantPage({ restaurant }) {
   return (
@@ -16,7 +17,7 @@ function RestaurantPage({ restaurant }) {
         </div>
         <div className="mx-3">
           <h1 className="text-2xl font-bold mb-2">{restaurant.name}</h1>
-          <Rate rate={3} size={"small"} />
+          <Rate rate={restaurant.rateAverage} size={"small"} />
           <small className="text-sm">{restaurant.reviewsCount} reviews</small>
           <p className="my-4 text-sm text-gray-600">{restaurant.description}</p>
         </div>
@@ -34,9 +35,9 @@ function RestaurantPage({ restaurant }) {
       <section className="mx-6 my-5 py-6 text-center">
         <h1 className="text-lg bold mb-4">Reviews Summary</h1>
         <div>
-          <h2 className="text-5xl mb-3">4.2</h2>
+          <h2 className="text-5xl mb-3">{restaurant.rateAverage}</h2>
           <div>
-            <Rate rate={3} size="medium" inline />
+            <Rate rate={restaurant.rateAverage} size="medium" inline />
           </div>
           <p>{restaurant.reviewsCount} Reviews</p>
         </div>
@@ -44,10 +45,14 @@ function RestaurantPage({ restaurant }) {
       <section className="mx-6 my-5 py-6">
         <h1 className="text-lg font-bold mb-4">Reviews</h1>
         <div>
-          <ReviewPost />
-          <ReviewPost />
-          <ReviewPost />
-          <ReviewPost />
+          <CommentComposer />
+          {restaurant.reviews.map((review) => (
+            <ReviewPost
+              key={review.id}
+              comment={review.comment}
+              rate={review.rate}
+            />
+          ))}
         </div>
       </section>
     </div>

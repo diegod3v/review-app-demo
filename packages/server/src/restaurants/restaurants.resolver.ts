@@ -21,10 +21,8 @@ export class RestaurantsResolver {
   @Mutation('createRestaurant')
   create(
     @Args('createRestaurantInput') createRestaurantInput: CreateRestaurantInput,
-    @Args('tagsIds')
-    tagsIds?: string[],
   ) {
-    return this.restaurantsService.create(createRestaurantInput, tagsIds);
+    return this.restaurantsService.create(createRestaurantInput);
   }
 
   @Query('restaurants')
@@ -66,15 +64,5 @@ export class RestaurantsResolver {
   @Mutation('removeRestaurant')
   remove(@Args('id') id: string) {
     return this.restaurantsService.remove(id);
-  }
-
-  @Mutation('createTag')
-  createTag(@Args('createTagInput') createTagInput: string) {
-    return this.restaurantsService.createTag(createTagInput);
-  }
-
-  @Mutation('removeTag')
-  removeTag(@Args('id') id: string) {
-    return this.restaurantsService.removeTag(id);
   }
 }

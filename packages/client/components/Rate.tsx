@@ -6,7 +6,7 @@ type Props = {
   size?: "small" | "medium" | "large";
   inline?: boolean;
   editable?: boolean;
-  onChange?: (item: number) => {};
+  onChange?: (item: number) => void;
 };
 
 const MAX_RATE = 5;
@@ -20,7 +20,7 @@ function Rate({
 }: Props) {
   const [tempRate, setTempRate] = useState<number | undefined>();
 
-  const cleanRate = tempRate ?? rate % 6;
+  const cleanRate = tempRate ?? Math.round(rate) % 6;
   const stars = [
     ...Array(cleanRate).fill(true),
     ...Array(MAX_RATE - cleanRate).fill(false),
@@ -35,6 +35,7 @@ function Rate({
     >
       {stars.map((isOn, i) => (
         <svg
+          key={i}
           className={classnames("mr-1 fill-current", {
             "w-3 h-3": size === "small",
             "w-5 h-5": size === "medium",

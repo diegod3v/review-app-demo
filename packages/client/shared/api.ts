@@ -33,8 +33,6 @@ class API {
             description
             phone
             website
-            kitchen
-            tags
             reviewsCount
             rateAverage
             reviews {

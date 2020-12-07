@@ -1,13 +1,5 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Review } from './review.entity';
-import { Tag } from './tags.entity';
 
 @Entity()
 export class Restaurant {
@@ -17,15 +9,12 @@ export class Restaurant {
   name: string;
   @Column()
   description: string;
+  @Column()
+  thumbnail: string;
   @Column({ nullable: true })
   phone: string;
   @Column({ nullable: true })
   website: string;
-  @Column({ nullable: true })
-  kitchen: string;
-  @ManyToMany(() => Tag, (tag) => tag.restaurants)
-  @JoinTable()
-  tags: Tag[];
   @OneToMany(() => Review, (review) => review.restaurant)
   reviews?: Review;
 }
