@@ -8,8 +8,11 @@ export class ReviewsResolver {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Mutation('createReview')
-  create(@Args('createReviewInput') createReviewInput: CreateReviewInput) {
-    return this.reviewsService.create(createReviewInput);
+  create(
+    @Args('restaurantId') restaurantId,
+    @Args('createReviewInput') createReviewInput: CreateReviewInput,
+  ) {
+    return this.reviewsService.create(restaurantId, createReviewInput);
   }
 
   @Query('reviews')

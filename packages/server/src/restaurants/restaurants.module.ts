@@ -6,9 +6,10 @@ import { ReviewsService } from './reviews.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Restaurant } from './entities/restaurant.entity';
 import { Review } from './entities/review.entity';
+import { Tag } from './entities/tags.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Restaurant, Review])],
+  imports: [TypeOrmModule.forFeature([Restaurant, Review, Tag])],
   providers: [
     RestaurantsResolver,
     RestaurantsService,

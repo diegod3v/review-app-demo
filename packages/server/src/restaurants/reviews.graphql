@@ -26,7 +26,10 @@ type Query {
 }
 
 type Mutation {
-  createReview(createReviewInput: CreateReviewInput!): Review!
+  createReview(
+    restaurantId: ID!
+    createReviewInput: CreateReviewInput!
+  ): Review!
   updateReview(id: ID!, updateReviewInput: UpdateReviewInput!): Review!
   removeReview(id: ID!): Review
 }

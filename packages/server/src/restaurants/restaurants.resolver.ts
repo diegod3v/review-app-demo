@@ -21,8 +21,10 @@ export class RestaurantsResolver {
   @Mutation('createRestaurant')
   create(
     @Args('createRestaurantInput') createRestaurantInput: CreateRestaurantInput,
+    @Args('tagsIds')
+    tagsIds?: string[],
   ) {
-    return this.restaurantsService.create(createRestaurantInput);
+    return this.restaurantsService.create(createRestaurantInput, tagsIds);
   }
 
   @Query('restaurants')
@@ -38,7 +40,19 @@ export class RestaurantsResolver {
   @ResolveField('reviews')
   async getReviews(@Parent() restaurant) {
     const { id } = restaurant;
-    return this.reviewsService.findAll({ restaurantId: id });
+    return this.reviewsService.findAllByRestaurantId(id);
+  }
+
+  @ResolveField('reviewsCount')
+  async getReviewsCount(@Parent() restaurant) {
+    const { id } = restaurant;
+    return this.reviewsService.findAllByRestaurantIdAndCount(id);
+  }
+
+  @ResolveField('rateAverage')
+  async getRateAverage(@Parent() restaurant) {
+    const { id } = restaurant;
+    return this.reviewsService.getRateAverageByRestaurantId(id);
   }
 
   @Mutation('updateRestaurant')
@@ -52,5 +66,15 @@ export class RestaurantsResolver {
   @Mutation('removeRestaurant')
   remove(@Args('id') id: string) {
     return this.restaurantsService.remove(id);
+  }
+
+  @Mutation('createTag')
+  createTag(@Args('createTagInput') createTagInput: string) {
+    return this.restaurantsService.createTag(createTagInput);
+  }
+
+  @Mutation('removeTag')
+  removeTag(@Args('id') id: string) {
+    return this.restaurantsService.removeTag(id);
   }
 }
