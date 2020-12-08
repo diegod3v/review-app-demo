@@ -10,12 +10,21 @@ type Props = {
   rate: number;
   ratio: "square" | "wide";
   reviewsCount: number;
+  link: string;
 };
 
-function RestaurantCard({ id, name, image, rate, reviewsCount, ratio }: Props) {
+function RestaurantCard({
+  id,
+  name,
+  image,
+  rate,
+  reviewsCount,
+  ratio,
+  link,
+}: Props) {
   return (
     <article>
-      <Link href={`${RESTAURANTS_ROUTE}/${id}`}>
+      <Link href={link}>
         <a>
           <div
             className={classnames("relative mb-1", {
@@ -32,7 +41,7 @@ function RestaurantCard({ id, name, image, rate, reviewsCount, ratio }: Props) {
         </a>
       </Link>
       <div className="pl-2">
-        <Link href={`${RESTAURANTS_ROUTE}/${id}`}>
+        <Link href={link}>
           <a>
             <h1 className="font-semibold mb-2">{name}</h1>
           </a>

@@ -8,6 +8,7 @@ type Props = {
   image: string;
   rate: number;
   reviewsCount: number;
+  link: string;
 };
 
 function RestaurantListItem({
@@ -16,11 +17,12 @@ function RestaurantListItem({
   image,
   rate,
   reviewsCount = 100,
+  link,
 }: Props) {
   return (
     <article className="flex">
       <div className="w-4/12">
-        <Link href={`${RESTAURANTS_ROUTE}/${id}`}>
+        <Link href={link}>
           <a>
             <div className="relative mb-1 pb-916">
               <img
@@ -34,7 +36,7 @@ function RestaurantListItem({
       </div>
       <div>
         <div className="pl-3 py-3">
-          <Link href={`${RESTAURANTS_ROUTE}/${id}`}>
+          <Link href={link}>
             <a>
               <h1 className="font-semibold">{name}</h1>
             </a>

@@ -40,12 +40,13 @@ function Rate({
             "w-3 h-3": size === "small",
             "w-5 h-5": size === "medium",
             "w-8 h-8": size === "large",
+            "cursor-pointer": editable,
             "text-yellow-500": isOn,
             "text-gray-400": !isOn,
           })}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
-          onClick={() => onChange && onChange(i)}
+          onClick={() => onChange && onChange(i + 1)}
           onMouseEnter={() => editable && setTempRate(i + 1)}
         >
           <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
