@@ -8,6 +8,9 @@ module.exports = {
         916: "120%",
         full: "100%",
       },
+      minWidth: {
+        20: "20rem",
+      },
     },
   },
   variants: {

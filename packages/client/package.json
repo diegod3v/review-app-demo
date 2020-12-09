@@ -17,6 +17,7 @@
     "react-dom": "17.0.1",
     "react-icons": "^4.1.0",
     "react-indiana-drag-scroll": "^1.8.0",
+    "react-popover": "^0.5.10",
     "tailwindcss": "^2.0.1"
   },
   "devDependencies": {

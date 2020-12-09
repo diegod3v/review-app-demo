@@ -6,4 +6,9 @@
 }
 
 @tailwind components;
+
+.Popover-tip {
+  fill: #fff;
+}
+
 @tailwind utilities;
