@@ -1,26 +1,88 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { Repository } from 'typeorm';
 import { CreateReviewInput } from './dto/create-review.input';
 import { UpdateReviewInput } from './dto/update-review.input';
+import { Restaurant } from './entities/restaurant.entity';
+import { Review } from './entities/review.entity';
 
 @Injectable()
 export class ReviewsService {
-  create(createReviewInput: CreateReviewInput) {
-    return 'This action adds a new review';
+  constructor(
+    @InjectRepository(Review)
+    private reviewRepository: Repository<Review>,
+    @InjectRepository(Restaurant)
+    private restaurantRepository: Repository<Restaurant>,
+  ) {}
+
+  async create(
+    restaurantId: string,
+    createReviewInput: CreateReviewInput,
+    user: User,
+  ) {
+    const restaurant = await this.restaurantRepository.findOne(restaurantId);
+
+    const review = new Review();
+    review.comment = createReviewInput.comment;
+    review.date = createReviewInput.date;
+    review.rate = createReviewInput.rate;
+    review.restaurant = restaurant;
+    review.user = user;
+
+    console.log('REVIEW SERVICE CREATE', review);
+
+    return this.reviewRepository.save(review);
   }
 
-  findAll(filters?: any) {
-    return `This action returns all reviews`;
+  findAll() {
+    return this.reviewRepository.find();
+  }
+
+  findAllByRestaurantId(restaurantId: string) {
+    return this.reviewRepository.find({
+      where: { restaurant: restaurantId },
+      order: { date: 'DESC' },
+    });
+  }
+
+  async findAllByRestaurantIdAndCount(restaurantId: string) {
+    const [, reviewsCount] = await this.reviewRepository.findAndCount({
+      where: { restaurant: restaurantId },
+    });
+
+    return reviewsCount;
+  }
+
+  async getRateAverageByRestaurantId(restaurantId: string) {
+    const { avg } = await this.reviewRepository
+      .createQueryBuilder('review')
+      .leftJoin(
+        'review.restaurant',
+        'restaurant',
+        'review.restaurant = :restaurantId',
+        { restaurantId },
+      )
+      .select('AVG(review.rate)', 'avg')
+      .getRawOne();
+
+    return avg ? Number(avg).toFixed(1) : 0;
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} review`;
+    return this.reviewRepository.findOne(id);
   }
 
   update(id: string, updateReviewInput: UpdateReviewInput) {
-    return `This action updates a #${id} review`;
+    const review = new Review();
+    review.comment = updateReviewInput.comment;
+    review.date = updateReviewInput.date;
+    review.rate = updateReviewInput.rate;
+
+    return this.reviewRepository.update({ id }, review);
   }
 
   remove(id: string) {
-    return `This action removes a #${id} review`;
+    return this.reviewRepository.delete(id);
   }
 }

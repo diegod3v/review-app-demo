@@ -6,6 +6,10 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersService } from './users/users.service';
+import { User } from './users/entities/user.entity';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
@@ -23,10 +27,24 @@ import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
     UsersModule,
     RestaurantsModule,
     GraphQLModule.forRoot({
-      typePaths: ['./**/*.graphql'],
+      autoSchemaFile: true,
     }),
+    AuthModule,
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly usersService: UsersService) {
+    usersService.findOneByEmail('admin@admin.com').then((adminUser) => {
+      if (!adminUser) {
+        usersService.create({
+          email: 'admin@admin.com',
+          name: 'Admin',
+          password: 'admin',
+        });
+      }
+    });
+  }
+}

@@ -1,16 +1,14 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@tailwind components;
+
+.Popover-tip {
+  fill: #fff;
 }
 
-* {
-  box-sizing: border-box;
-}
+@tailwind utilities;

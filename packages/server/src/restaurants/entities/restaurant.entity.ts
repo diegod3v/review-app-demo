@@ -7,6 +7,14 @@ export class Restaurant {
   id: string;
   @Column()
   name: string;
+  @Column()
+  description: string;
+  @Column()
+  thumbnail: string;
+  @Column({ nullable: true })
+  phone: string;
+  @Column({ nullable: true })
+  website: string;
   @OneToMany(() => Review, (review) => review.restaurant)
   reviews?: Review;
 }

@@ -12,9 +12,13 @@ export class RestaurantsService {
     private restaurantRepository: Repository<Restaurant>,
   ) {}
 
-  create(createRestaurantInput: CreateRestaurantInput) {
+  async create(createRestaurantInput: CreateRestaurantInput) {
     const restaurant = new Restaurant();
     restaurant.name = createRestaurantInput.name;
+    restaurant.description = createRestaurantInput.description;
+    restaurant.phone = createRestaurantInput.phone;
+    restaurant.website = createRestaurantInput.website;
+    restaurant.thumbnail = createRestaurantInput.thumbnail;
 
     return this.restaurantRepository.save(restaurant);
   }
