@@ -3,9 +3,8 @@ import { IsDateString, Max, MaxLength, Min, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateReviewInput {
-  @IsDateString()
   @Field()
-  date: Date;
+  date: string;
 
   @MinLength(3)
   @MaxLength(250)

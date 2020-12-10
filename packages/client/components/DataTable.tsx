@@ -1,9 +1,13 @@
+import classnames from "classnames";
+
 type Props = {
-  headings: { name: string; key: string };
+  headings: [{ name: string; key: string }];
   data: any[];
+  selected: any;
+  onSelect: (data: any, index: number) => void;
 };
 
-function DataTable({ headings, data }) {
+function DataTable({ headings, data, selected, onSelect }: Props) {
   return (
     <div className="container mx-auto py-6 px-4">
       <div className="mb-4 flex justify-between items-center">
@@ -38,36 +42,32 @@ function DataTable({ headings, data }) {
         <table className="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
           <thead>
             <tr className="text-left">
-              <th className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-yellow-100">
-                <label className="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox focus:outline-none focus:shadow-outline"
-                  />
-                </label>
-              </th>
               {headings.map((heading) => (
-                <th className=" bg-yellow-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">
+                <th
+                  key={heading.key}
+                  className=" bg-yellow-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs"
+                >
                   {heading.name}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {data.map((user) => (
-              <tr className="hover:bg-gray-100">
-                <td className="border-dashed border-t border-gray-200 px-3">
-                  <label className="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
-                    />
-                  </label>
-                </td>
+            {data.map((dataRow, i) => (
+              <tr
+                key={dataRow.id}
+                className={classnames("hover:bg-gray-100", {
+                  "bg-gray-300": selected?.id === dataRow?.id,
+                })}
+                onClick={() => onSelect(dataRow, i)}
+              >
                 {headings.map((heading) => (
-                  <td className="border-dashed border-t border-gray-200 userId">
+                  <td
+                    key={heading.key}
+                    className="border-dashed border-t border-gray-200"
+                  >
                     <span className="text-gray-700 px-6 py-3 flex items-center">
-                      {user[heading.key]}
+                      {dataRow[heading.key]}
                     </span>
                   </td>
                 ))}

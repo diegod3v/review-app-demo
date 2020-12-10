@@ -1,6 +1,8 @@
 import AdminLayout from "../../components/AdminLayout";
 import { FaPizzaSlice, FaCommentAlt, FaUser } from "react-icons/fa";
 import Link from "next/link";
+import { GetServerSideProps } from "next";
+import Cookies from "universal-cookie";
 
 function AdminHome() {
   return (
@@ -55,5 +57,21 @@ function AdminHome() {
     </AdminLayout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const cookies = new Cookies(req ? req.headers.cookie : null);
+  const token = cookies.get("token");
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/admin/login",
+        permanent: false,
+      },
+    };
+  } else {
+    return { props: {} };
+  }
+};
 
 export default AdminHome;

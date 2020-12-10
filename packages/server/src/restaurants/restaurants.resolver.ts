@@ -5,64 +5,69 @@ import {
   Args,
   ResolveField,
   Parent,
+  Int,
+  Float,
+  ID,
 } from '@nestjs/graphql';
 import { RestaurantsService } from './restaurants.service';
 import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { ReviewsService } from './reviews.service';
+import { Restaurant } from './models/restaurant.model';
+import { Review } from './models/review.model';
 
-@Resolver('Restaurant')
+@Resolver(() => Restaurant)
 export class RestaurantsResolver {
   constructor(
     private readonly restaurantsService: RestaurantsService,
     private readonly reviewsService: ReviewsService,
   ) {}
 
-  @Mutation('createRestaurant')
+  @Mutation(() => Restaurant, { name: 'createRestaurant' })
   create(
     @Args('createRestaurantInput') createRestaurantInput: CreateRestaurantInput,
   ) {
     return this.restaurantsService.create(createRestaurantInput);
   }
 
-  @Query('restaurants')
+  @Query(() => [Restaurant], { name: 'restaurants' })
   findAll() {
     return this.restaurantsService.findAll();
   }
 
-  @Query('restaurant')
-  findOne(@Args('id') id: string) {
+  @Query(() => Restaurant, { name: 'restaurant' })
+  findOne(@Args('id', { type: () => ID }) id: string) {
     return this.restaurantsService.findOne(id);
   }
 
-  @ResolveField('reviews')
+  @ResolveField('reviews', () => [Review])
   async getReviews(@Parent() restaurant) {
     const { id } = restaurant;
     return this.reviewsService.findAllByRestaurantId(id);
   }
 
-  @ResolveField('reviewsCount')
+  @ResolveField('reviewsCount', () => Int)
   async getReviewsCount(@Parent() restaurant) {
     const { id } = restaurant;
     return this.reviewsService.findAllByRestaurantIdAndCount(id);
   }
 
-  @ResolveField('rateAverage')
+  @ResolveField('rateAverage', () => Float)
   async getRateAverage(@Parent() restaurant) {
     const { id } = restaurant;
     return this.reviewsService.getRateAverageByRestaurantId(id);
   }
 
-  @Mutation('updateRestaurant')
+  @Mutation(() => Restaurant, { name: 'updateRestaurant' })
   update(
-    @Args('id') id: string,
+    @Args('id', { type: () => ID }) id: string,
     @Args('updateRestaurantInput') updateRestaurantInput: UpdateRestaurantInput,
   ) {
     return this.restaurantsService.update(id, updateRestaurantInput);
   }
 
-  @Mutation('removeRestaurant')
-  remove(@Args('id') id: string) {
+  @Mutation(() => Restaurant, { name: 'removeRestaurant' })
+  remove(@Args('id', { type: () => ID }) id: string) {
     return this.restaurantsService.remove(id);
   }
 }

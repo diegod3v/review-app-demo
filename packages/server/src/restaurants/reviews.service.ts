@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewInput } from './dto/create-review.input';
 import { UpdateReviewInput } from './dto/update-review.input';
@@ -15,7 +16,11 @@ export class ReviewsService {
     private restaurantRepository: Repository<Restaurant>,
   ) {}
 
-  async create(restaurantId: string, createReviewInput: CreateReviewInput) {
+  async create(
+    restaurantId: string,
+    createReviewInput: CreateReviewInput,
+    user: User,
+  ) {
     const restaurant = await this.restaurantRepository.findOne(restaurantId);
 
     const review = new Review();
@@ -23,6 +28,9 @@ export class ReviewsService {
     review.date = createReviewInput.date;
     review.rate = createReviewInput.rate;
     review.restaurant = restaurant;
+    review.user = user;
+
+    console.log('REVIEW SERVICE CREATE', review);
 
     return this.reviewRepository.save(review);
   }
@@ -32,7 +40,10 @@ export class ReviewsService {
   }
 
   findAllByRestaurantId(restaurantId: string) {
-    return this.reviewRepository.find({ where: { restaurant: restaurantId } });
+    return this.reviewRepository.find({
+      where: { restaurant: restaurantId },
+      order: { date: 'DESC' },
+    });
   }
 
   async findAllByRestaurantIdAndCount(restaurantId: string) {

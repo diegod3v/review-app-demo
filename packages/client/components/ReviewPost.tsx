@@ -4,9 +4,10 @@ import { FaUserAlt } from "react-icons/fa";
 type Props = {
   comment: string;
   rate: number;
+  user: { name: string };
 };
 
-function ReviewPost({ comment, rate }: Props) {
+function ReviewPost({ comment, rate, user }: Props) {
   return (
     <article className="my-7">
       <div className="flex items-center">
@@ -16,7 +17,7 @@ function ReviewPost({ comment, rate }: Props) {
           </div>
         </div>
         <div className="pl-2 w-full">
-          <h1 className="text-xs font-bold mb-1">John Doe</h1>
+          <h1 className="text-xs font-bold mb-1">{user.name}</h1>
           <Rate rate={rate} size="small" />
         </div>
       </div>

@@ -2,12 +2,17 @@ import Rate from "../components/Rate";
 import { FaPhoneAlt, FaGlobeAmericas } from "react-icons/fa";
 import ReviewPost from "../components/ReviewPost";
 import CommentComposer from "../components/CommentComposer";
+import API from "../shared/api";
+import { useRouter } from "next/router";
+import { sanitizeUrl } from "../utils/sanitize";
 
 type Props = {
   restaurant: any;
 };
 
 function RestaurantDetail({ restaurant }: Props) {
+  const router = useRouter();
+
   return (
     <div className="my-8">
       <div className="mx-3">
@@ -36,11 +41,23 @@ function RestaurantDetail({ restaurant }: Props) {
             <section className="mx-6 my-5 py-6 border-t border-b border-gray-300">
               <p className="text-sm mb-5">
                 <FaPhoneAlt className="text-yellow-500 text-xl inline mr-5" />{" "}
-                {restaurant.phone}
+                <a
+                  className="underline text-blue-500 hover:text-blue-300"
+                  href={`tel:${restaurant.phone}`}
+                >
+                  {restaurant.phone}
+                </a>
               </p>
               <p className="text-sm">
                 <FaGlobeAmericas className="text-yellow-500 text-xl inline mr-5" />{" "}
-                {restaurant.website}
+                <a
+                  rel="nofollow noopener noreferrer"
+                  target="_blank"
+                  className="underline text-blue-500 hover:text-blue-300"
+                  href={sanitizeUrl(restaurant.website)}
+                >
+                  {restaurant.website}
+                </a>
               </p>
             </section>
             <section className="mx-6 my-5 py-6 text-center">
@@ -59,12 +76,22 @@ function RestaurantDetail({ restaurant }: Props) {
           <section className="mx-6 my-5 py-6">
             <h1 className="text-lg font-bold mb-4">Reviews</h1>
             <div>
-              <CommentComposer />
+              <CommentComposer
+                onSubmit={async (review) => {
+                  try {
+                    await API.createReview(restaurant.id, review);
+                    router.replace(router.asPath);
+                  } catch (err) {
+                    console.log(err);
+                  }
+                }}
+              />
               {restaurant.reviews.map((review) => (
                 <ReviewPost
                   key={review.id}
                   comment={review.comment}
                   rate={review.rate}
+                  user={review.user}
                 />
               ))}
             </div>

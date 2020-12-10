@@ -6,4 +6,10 @@ export class User {
   id: string;
   @Column()
   name: string;
+  @Column()
+  email: string;
+  @Column({ default: false })
+  isAdmin: boolean;
+  @Column({ select: false })
+  password: string;
 }
