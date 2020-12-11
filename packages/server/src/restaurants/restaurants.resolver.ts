@@ -38,7 +38,7 @@ export class RestaurantsResolver {
   @Query(() => [Restaurant], { name: 'restaurants' })
   @Public()
   findAll() {
-    return this.restaurantsService.findAll();
+    return this.restaurantsService.findAllAndOrderByReviewRate();
   }
 
   @Query(() => Restaurant, { name: 'restaurant' })

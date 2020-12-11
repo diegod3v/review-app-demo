@@ -27,6 +27,14 @@ export class RestaurantsService {
     return this.restaurantRepository.find();
   }
 
+  findAllAndOrderByReviewRate() {
+    return this.restaurantRepository
+      .createQueryBuilder('restaurant')
+      .leftJoinAndSelect('restaurant.reviews', 'review')
+      .orderBy('review.rate', 'ASC')
+      .getMany();
+  }
+
   findOne(id: string) {
     return this.restaurantRepository.findOne(id);
   }
