@@ -22,7 +22,7 @@ function RestaurantSlideSection({
           {restaurants.map((info) => (
             <div
               key={info.id}
-              className="w-10/12 sm:w-1/2 md:w-1/3 flex-shrink-0 p-2"
+              className="w-10/12 sm:w-1/2-extra md:w-1/3-extra flex-shrink-0 p-2"
             >
               <RestaurantCard
                 name={info.name}

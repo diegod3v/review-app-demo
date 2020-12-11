@@ -23,7 +23,7 @@ function Home({ restaurants }) {
         />
         <section className="container mx-auto my-5">
           <h1 className="pl-2 mb-3 text-2xl font-bold">All places</h1>
-          <div className="flex flex-col sm:flex-row space-y-2 px-4">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap space-y-2 px-4">
             {restaurants.map((info, i) => (
               <div className="w-full sm:w-1/2">
                 <RestaurantListItem
