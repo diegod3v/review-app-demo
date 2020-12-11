@@ -30,8 +30,6 @@ export class ReviewsService {
     review.restaurant = restaurant;
     review.user = user;
 
-    console.log('REVIEW SERVICE CREATE', review);
-
     return this.reviewRepository.save(review);
   }
 
@@ -57,29 +55,38 @@ export class ReviewsService {
   async getRateAverageByRestaurantId(restaurantId: string) {
     const { avg } = await this.reviewRepository
       .createQueryBuilder('review')
-      .leftJoin(
-        'review.restaurant',
-        'restaurant',
-        'review.restaurant = :restaurantId',
-        { restaurantId },
-      )
+      .leftJoin('review.restaurant', 'restaurant')
+      .where('review.restaurant = :restaurantId', { restaurantId })
       .select('AVG(review.rate)', 'avg')
       .getRawOne();
 
     return avg ? Number(avg).toFixed(1) : 0;
   }
 
+  findFirstResultByFieldAndRestaurantId(
+    field: string,
+    restaurantId: string,
+    sort: 'DESC' | 'ASC',
+  ) {
+    return this.reviewRepository.findOne({
+      where: { restaurant: restaurantId },
+      order: { [field]: sort },
+    });
+  }
+
   findOne(id: string) {
     return this.reviewRepository.findOne(id);
   }
 
-  update(id: string, updateReviewInput: UpdateReviewInput) {
+  async update(id: string, updateReviewInput: UpdateReviewInput) {
     const review = new Review();
     review.comment = updateReviewInput.comment;
     review.date = updateReviewInput.date;
     review.rate = updateReviewInput.rate;
 
-    return this.reviewRepository.update({ id }, review);
+    await this.reviewRepository.update({ id }, review);
+
+    return this.reviewRepository.findOne(id);
   }
 
   remove(id: string) {

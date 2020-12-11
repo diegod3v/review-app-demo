@@ -2,10 +2,11 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import AdminLayout from "../../components/AdminLayout";
-import CreateResource from "../../components/CreateResource";
+import ResourceForm from "../../components/ResourceForm";
 import DataTable from "../../components/DataTable";
 import API from "../../shared/api";
 import Modal from "react-modal";
+import classnames from "classnames";
 
 const resourceFields = {
   restaurants: ["name", "description", "phone", "website", "thumbnail"],
@@ -68,7 +69,7 @@ function AdminDataTypePage({ data }) {
         selected={dataSelected}
         onSelect={(data) => {
           setDataSelected(data);
-          setCreateModalOpen(true);
+          setEditModalOpen(true);
         }}
       />
       <div className="flex justify-end w-11/12">
@@ -90,7 +91,7 @@ function AdminDataTypePage({ data }) {
           <h1 className="text-2xl font-semibold text-center mb-10">
             Create New Entry
           </h1>
-          <CreateResource
+          <ResourceForm
             fields={fields}
             onSubmit={async (values) => {
               if (datatype === "restaurants") {
@@ -103,7 +104,6 @@ function AdminDataTypePage({ data }) {
               }
 
               setCreateModalOpen(false);
-
               Router.replace(Router.asPath);
             }}
           />
@@ -120,16 +120,18 @@ function AdminDataTypePage({ data }) {
           <h1 className="text-2xl font-semibold text-center mb-10">
             Edit Entry
           </h1>
-          <CreateResource
+          <ResourceForm
+            key={dataSelected?.id}
+            initialValues={dataSelected}
             fields={fields}
             onSubmit={async (values) => {
               if (datatype === "restaurants") {
-                await API.createRestaurant(values);
+                await API.updateRestaurant(values, dataSelected.id);
               } else if (datatype === "reviews") {
                 const { restaurantId, ...review } = values;
-                await API.createReview(restaurantId, review);
+                await API.updateReview(review, dataSelected.id);
               } else if (datatype === "users") {
-                await API.createUser(values);
+                await API.updateUser(values, dataSelected.id);
               }
 
               setEditModalOpen(false);
@@ -137,6 +139,30 @@ function AdminDataTypePage({ data }) {
               Router.replace(Router.asPath);
             }}
           />
+          <button
+            className={classnames(
+              "bg-transparent border-2 border-red-500 text-red-500 rounded-full px-6 py-2 w-full uppercase font-bold text-sm mt-7"
+            )}
+            onClick={async (values) => {
+              try {
+                if (datatype === "restaurants") {
+                  await API.removeRestaurant(dataSelected.id);
+                } else if (datatype === "reviews") {
+                  await API.removeReview(dataSelected.id);
+                } else if (datatype === "users") {
+                  await API.removeUser(dataSelected.id);
+                }
+              } catch (err) {
+                console.log(err);
+              }
+
+              setEditModalOpen(false);
+
+              Router.replace(Router.asPath);
+            }}
+          >
+            Delete
+          </button>
         </div>
       </Modal>
     </AdminLayout>

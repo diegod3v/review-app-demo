@@ -18,7 +18,7 @@ function RestaurantPage({ restaurant }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const { restaurant } = await API.getRestaurantById(params.id as string);
+  const { restaurant } = await API.getRestaurantDetailById(params.id as string);
   return {
     props: { restaurant },
   };

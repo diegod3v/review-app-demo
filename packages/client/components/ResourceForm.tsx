@@ -1,25 +1,41 @@
 import { Formik } from "formik";
 import classnames from "classnames";
+import { pick } from "lodash";
 
 type Props = {
   fields: string[];
   onSubmit: (values) => void;
+  initialValues?: any;
 };
 
-function CreateResource({ fields, onSubmit }: Props) {
-  const initialValues = {};
-  fields.forEach((field) => (initialValues[field] = ""));
+function ResourceForm({ fields, onSubmit, initialValues }: Props) {
+  let initialFormValues = {};
+  if (initialValues) {
+    initialFormValues = pick(initialValues, fields);
+  } else {
+    fields.forEach((field) => (initialFormValues[field] = ""));
+  }
 
   return (
     <section>
       <div>
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        <Formik
+          initialValues={initialFormValues}
+          onSubmit={async (values, formikBag) => {
+            try {
+              await onSubmit(values);
+            } catch (err) {
+              formikBag.setStatus({ generalError: err.message });
+            }
+          }}
+        >
           {({
             values,
             handleChange,
             handleBlur,
             handleSubmit,
             isSubmitting,
+            status,
           }) => (
             <form onSubmit={handleSubmit}>
               {fields.map((field) => (
@@ -35,6 +51,13 @@ function CreateResource({ fields, onSubmit }: Props) {
                 </div>
               ))}
               <div>
+                {status?.generalError && (
+                  <div>
+                    <p className="text-xs text-red-500">
+                      There was an error: {status.generalError}
+                    </p>
+                  </div>
+                )}
                 <button
                   type="submit"
                   className={classnames(
@@ -54,4 +77,4 @@ function CreateResource({ fields, onSubmit }: Props) {
   );
 }
 
-export default CreateResource;
+export default ResourceForm;

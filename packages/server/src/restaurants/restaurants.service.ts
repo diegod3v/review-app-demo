@@ -31,11 +31,17 @@ export class RestaurantsService {
     return this.restaurantRepository.findOne(id);
   }
 
-  update(id: string, updateRestaurantInput: UpdateRestaurantInput) {
+  async update(id: string, updateRestaurantInput: UpdateRestaurantInput) {
     const restaurant = new Restaurant();
     restaurant.name = updateRestaurantInput.name;
+    restaurant.description = updateRestaurantInput.description;
+    restaurant.phone = updateRestaurantInput.phone;
+    restaurant.website = updateRestaurantInput.website;
+    restaurant.thumbnail = updateRestaurantInput.thumbnail;
 
-    return this.restaurantRepository.update({ id }, restaurant);
+    await this.restaurantRepository.update({ id }, restaurant);
+
+    return this.restaurantRepository.findOne(id);
   }
 
   remove(id: string) {

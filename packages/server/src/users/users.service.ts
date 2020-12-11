@@ -21,6 +21,16 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
+  createAdmin(createUserInput: CreateUserInput) {
+    const user = new User();
+    user.name = createUserInput.name;
+    user.email = createUserInput.email;
+    user.password = createUserInput.password;
+    user.isAdmin = true;
+
+    return this.userRepository.save(user);
+  }
+
   findAll() {
     return this.userRepository.find();
   }
@@ -41,11 +51,13 @@ export class UsersService {
     return userQuery.getOne();
   }
 
-  update(id: string, updateUserInput: UpdateUserInput) {
+  async update(id: string, updateUserInput: UpdateUserInput) {
     const user = new User();
     user.name = updateUserInput.name;
 
-    return this.userRepository.update({ id }, user);
+    await this.userRepository.update({ id }, user);
+
+    return this.userRepository.findOne(id);
   }
 
   remove(id: string) {

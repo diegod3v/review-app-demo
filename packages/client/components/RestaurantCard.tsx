@@ -4,9 +4,8 @@ import Rate from "./Rate";
 import Link from "next/link";
 
 type Props = {
-  id: string;
   name: string;
-  image: any;
+  thumbnail: any;
   rate: number;
   ratio: "square" | "wide";
   reviewsCount: number;
@@ -14,9 +13,8 @@ type Props = {
 };
 
 function RestaurantCard({
-  id,
   name,
-  image,
+  thumbnail,
   rate,
   reviewsCount,
   ratio,
@@ -34,7 +32,7 @@ function RestaurantCard({
           >
             <img
               className="absolute h-full w-full object-cover rounded-xl"
-              src={`https://picsum.photos/600/400?random=${image}`}
+              src={thumbnail}
               alt="restaurant"
             />
           </div>

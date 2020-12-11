@@ -26,7 +26,10 @@ function LoginPage() {
                   values.password
                 );
                 const cookies = new Cookies();
-                cookies.set("token", access_token, { sameSite: "strict" });
+                cookies.set("token", access_token, {
+                  sameSite: "strict",
+                  path: "/",
+                });
 
                 Router.push("/admin");
               }}

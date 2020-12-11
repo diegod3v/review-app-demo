@@ -1,17 +1,21 @@
 import Axios from "axios";
+import { root } from "postcss";
 
 export default async function queryGraphql(apiUrl, query, variables = {}) {
-  try {
-    const res = await Axios.post(apiUrl, { query, variables });
+  const res = await Axios.post(apiUrl, { query, variables });
 
-    if (res.status !== 200) {
-      console.log(res.statusText);
-      throw new Error("Failed to fetch API");
-    }
-
-    return res.data?.data;
-  } catch (err) {
-    console.log(err.response.data);
-    throw new Error("Failed to fetch API");
+  if (res.status !== 200) {
+    console.log(res.statusText);
+    throw new Error(res.statusText);
   }
+
+  if (res.data.errors) {
+    const message = res.data.errors[0]?.extensions?.exception?.response?.message?.join(
+      ". "
+    );
+    const rootMessage = res.data.errors[0].message;
+    throw new Error(message ?? rootMessage);
+  }
+
+  return res.data?.data;
 }

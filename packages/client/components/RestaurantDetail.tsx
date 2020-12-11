@@ -5,13 +5,43 @@ import CommentComposer from "../components/CommentComposer";
 import API from "../shared/api";
 import { useRouter } from "next/router";
 import { sanitizeUrl } from "../utils/sanitize";
+import useUser from "../hooks/useUser";
+import ReviewFeaturedCard from "./ReviewFeaturedCard";
+
+interface Review {
+  id: string;
+  date: string;
+  comment: string;
+  rate: number;
+  user: {
+    name: string;
+  };
+}
+
+interface RestaurantDetail {
+  id: string;
+  name: string;
+  description: string;
+  phone: string;
+  website: string;
+  thumbnail: string;
+  rateAverage: number;
+  reviewsCount: number;
+  latestReview: Review;
+  highestReview: Review;
+  lowestReview: Review;
+  reviews: Review;
+}
 
 type Props = {
-  restaurant: any;
+  restaurant: RestaurantDetail;
 };
 
 function RestaurantDetail({ restaurant }: Props) {
+  const user = useUser();
   const router = useRouter();
+
+  const { highestReview, lowestReview, latestReview } = restaurant;
 
   return (
     <div className="my-8">
@@ -19,7 +49,7 @@ function RestaurantDetail({ restaurant }: Props) {
         <div className="relative w-full pb-169 mb-3 overflow-hidden rounded-xl shadow-lg">
           <img
             className="absolute w-full h-full object-cover"
-            src={`https://picsum.photos/600/400?random=100`}
+            src={restaurant.thumbnail}
           />
         </div>
       </div>
@@ -70,22 +100,68 @@ function RestaurantDetail({ restaurant }: Props) {
                 <p>{restaurant.reviewsCount} Reviews</p>
               </div>
             </section>
+            <section className="mx-6 my-5 py-6">
+              <h1 className="text-lg font-bold my-4 text-center">
+                What customers says ?
+              </h1>
+              {highestReview && (
+                <div>
+                  <h2 className="text-lg mb-3">The good</h2>
+                  <ReviewFeaturedCard
+                    comment={highestReview.comment}
+                    rate={highestReview.rate}
+                    user={highestReview.user}
+                    date={highestReview.date}
+                  />
+                </div>
+              )}
+              {lowestReview && (
+                <div>
+                  <h2 className="text-lg mb-3">The bad</h2>
+                  <ReviewFeaturedCard
+                    comment={lowestReview.comment}
+                    rate={lowestReview.rate}
+                    user={lowestReview.user}
+                    date={lowestReview.date}
+                  />
+                </div>
+              )}
+              {latestReview && (
+                <div>
+                  <h2 className="text-lg mb-3">Latest Review</h2>
+                  <ReviewFeaturedCard
+                    comment={latestReview.comment}
+                    rate={latestReview.rate}
+                    user={latestReview.user}
+                    date={latestReview.date}
+                  />
+                </div>
+              )}
+            </section>
           </div>
         </div>
         <div className="sm:w-1/2 sm:order-1">
           <section className="mx-6 my-5 py-6">
             <h1 className="text-lg font-bold mb-4">Reviews</h1>
             <div>
-              <CommentComposer
-                onSubmit={async (review) => {
-                  try {
-                    await API.createReview(restaurant.id, review);
-                    router.replace(router.asPath);
-                  } catch (err) {
-                    console.log(err);
-                  }
-                }}
-              />
+              {user ? (
+                <CommentComposer
+                  onSubmit={async (review) => {
+                    try {
+                      await API.createReview(restaurant.id, review);
+                      router.replace(router.asPath);
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  }}
+                />
+              ) : (
+                <div>
+                  <p className="text-2xl font-semibold text-center">
+                    Registrate para dejar un comentario!
+                  </p>
+                </div>
+              )}
               {restaurant.reviews.map((review) => (
                 <ReviewPost
                   key={review.id}
