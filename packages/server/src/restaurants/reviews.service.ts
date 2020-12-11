@@ -63,6 +63,17 @@ export class ReviewsService {
     return avg ? Number(avg).toFixed(1) : 0;
   }
 
+  findFirstResultByFieldAndRestaurantId(
+    field: string,
+    restaurantId: string,
+    sort: 'DESC' | 'ASC',
+  ) {
+    return this.reviewRepository.findOne({
+      where: { restaurant: restaurantId },
+      order: { [field]: sort },
+    });
+  }
+
   findOne(id: string) {
     return this.reviewRepository.findOne(id);
   }

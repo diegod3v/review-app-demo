@@ -1,16 +1,14 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { ReviewsService } from './reviews.service';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import { Public } from 'src/auth/is-public.decorator';
+import { Action } from 'src/casl/action.enum';
+import { RequirePermissions } from 'src/casl/casl.decorator';
+import { Resource } from 'src/casl/resources.enum';
+import { User } from 'src/users/entities/user.entity';
 import { CreateReviewInput } from './dto/create-review.input';
 import { UpdateReviewInput } from './dto/update-review.input';
 import { Review } from './models/review.model';
-import { CurrentUser } from 'src/auth/current-user.decorator';
-import { User } from 'src/users/entities/user.entity';
-import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from 'src/auth/jwt-gql.guard';
-import { RequirePermissions } from 'src/casl/casl.decorator';
-import { Action } from 'src/casl/action.enum';
-import { Resource } from 'src/casl/resources.enum';
-import { Public } from 'src/auth/is-public.decorator';
+import { ReviewsService } from './reviews.service';
 
 @Resolver(() => Review)
 export class ReviewsResolver {

@@ -18,7 +18,6 @@ import { Review } from './models/review.model';
 import { RequirePermissions } from 'src/casl/casl.decorator';
 import { Action } from 'src/casl/action.enum';
 import { Resource } from 'src/casl/resources.enum';
-import { CurrentUser } from 'src/auth/current-user.decorator';
 import { Public } from 'src/auth/is-public.decorator';
 
 @Resolver(() => Restaurant)
@@ -64,6 +63,36 @@ export class RestaurantsResolver {
   async getRateAverage(@Parent() restaurant) {
     const { id } = restaurant;
     return this.reviewsService.getRateAverageByRestaurantId(id);
+  }
+
+  @ResolveField('latestReview', () => Review)
+  async getLatestReview(@Parent() restaurant) {
+    const { id } = restaurant;
+    return this.reviewsService.findFirstResultByFieldAndRestaurantId(
+      'date',
+      id,
+      'DESC',
+    );
+  }
+
+  @ResolveField('lowestReview', () => Review)
+  async getLowestReview(@Parent() restaurant) {
+    const { id } = restaurant;
+    return this.reviewsService.findFirstResultByFieldAndRestaurantId(
+      'rate',
+      id,
+      'ASC',
+    );
+  }
+
+  @ResolveField('highestReview', () => Review)
+  async getHighestReview(@Parent() restaurant) {
+    const { id } = restaurant;
+    return this.reviewsService.findFirstResultByFieldAndRestaurantId(
+      'rate',
+      id,
+      'DESC',
+    );
   }
 
   @Mutation(() => Restaurant, { name: 'updateRestaurant' })

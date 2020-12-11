@@ -98,7 +98,7 @@ class API {
     `);
   }
 
-  getRestaurantById(id: string) {
+  getRestaurantDetailById(id: string) {
     return this.queryAPI(
       `
         query($id: ID!) {
@@ -108,9 +108,39 @@ class API {
             description
             phone
             website
+            thumbnail
             reviewsCount
             rateAverage
-            thumbnail
+            latestReview {
+              id
+              date
+              comment
+              rate
+              user {
+                id
+                name
+              }
+            }
+            highestReview {
+              id
+              date
+              comment
+              rate
+              user {
+                id
+                name
+              }
+            }
+            lowestReview {
+              id
+              date
+              comment
+              rate
+              user {
+                id
+                name
+              }
+            }
             reviews {
               id
               date

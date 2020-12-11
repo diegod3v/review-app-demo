@@ -1,15 +1,13 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { UsersService } from './users.service';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
-import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from 'src/auth/jwt-gql.guard';
-import { User } from './models/user.model';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/auth/current-user.decorator';
-import { Resource } from 'src/casl/resources.enum';
+import { Public } from 'src/auth/is-public.decorator';
 import { Action } from 'src/casl/action.enum';
 import { RequirePermissions } from 'src/casl/casl.decorator';
-import { Public } from 'src/auth/is-public.decorator';
+import { Resource } from 'src/casl/resources.enum';
+import { CreateUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
+import { User } from './models/user.model';
+import { UsersService } from './users.service';
 
 @Resolver(() => User)
 export class UsersResolver {
