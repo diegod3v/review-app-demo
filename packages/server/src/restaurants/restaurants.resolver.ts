@@ -65,7 +65,7 @@ export class RestaurantsResolver {
     return this.reviewsService.getRateAverageByRestaurantId(id);
   }
 
-  @ResolveField('latestReview', () => Review)
+  @ResolveField('latestReview', () => Review, { nullable: true })
   async getLatestReview(@Parent() restaurant) {
     const { id } = restaurant;
     return this.reviewsService.findFirstResultByFieldAndRestaurantId(
@@ -75,7 +75,7 @@ export class RestaurantsResolver {
     );
   }
 
-  @ResolveField('lowestReview', () => Review)
+  @ResolveField('lowestReview', () => Review, { nullable: true })
   async getLowestReview(@Parent() restaurant) {
     const { id } = restaurant;
     return this.reviewsService.findFirstResultByFieldAndRestaurantId(
@@ -85,7 +85,7 @@ export class RestaurantsResolver {
     );
   }
 
-  @ResolveField('highestReview', () => Review)
+  @ResolveField('highestReview', () => Review, { nullable: true })
   async getHighestReview(@Parent() restaurant) {
     const { id } = restaurant;
     return this.reviewsService.findFirstResultByFieldAndRestaurantId(
