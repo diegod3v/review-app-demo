@@ -3,21 +3,19 @@ import Rate from "../components/Rate";
 import { RESTAURANTS_ROUTE } from "../constants/routes";
 
 type Props = {
-  id: string;
   name: string;
-  image: string;
   rate: number;
   reviewsCount: number;
   link: string;
+  thumbnail: string;
 };
 
 function RestaurantListItem({
-  id,
   name,
-  image,
   rate,
   reviewsCount = 100,
   link,
+  thumbnail,
 }: Props) {
   return (
     <article className="flex">
@@ -27,7 +25,7 @@ function RestaurantListItem({
             <div className="relative mb-1 pb-916">
               <img
                 className="absolute h-full w-full object-cover rounded-xl"
-                src={`https://picsum.photos/600/400?random=${image}`}
+                src={thumbnail}
                 alt="restaurant"
               />
             </div>

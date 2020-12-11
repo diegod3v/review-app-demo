@@ -25,12 +25,25 @@ class API {
     return data;
   }
 
+  getMyProfile() {
+    return this.queryAPI(`
+    query {
+      me {
+        id
+        name
+        email
+      }
+    }
+    `);
+  }
+
   getAllRestaurants() {
     return this.queryAPI(`
         query {
           restaurants {
             id
             name
+            thumbnail
             reviewsCount
             rateAverage
           }
@@ -97,6 +110,7 @@ class API {
             website
             reviewsCount
             rateAverage
+            thumbnail
             reviews {
               id
               date

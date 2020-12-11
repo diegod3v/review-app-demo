@@ -34,7 +34,6 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'me' })
-  @UseGuards(GqlAuthGuard)
   whoAmI(@CurrentUser() user: User) {
     return this.usersService.findOne(user.id);
   }

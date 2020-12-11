@@ -55,12 +55,8 @@ export class ReviewsService {
   async getRateAverageByRestaurantId(restaurantId: string) {
     const { avg } = await this.reviewRepository
       .createQueryBuilder('review')
-      .leftJoin(
-        'review.restaurant',
-        'restaurant',
-        'review.restaurant = :restaurantId',
-        { restaurantId },
-      )
+      .leftJoin('review.restaurant', 'restaurant')
+      .where('review.restaurant = :restaurantId', { restaurantId })
       .select('AVG(review.rate)', 'avg')
       .getRawOne();
 

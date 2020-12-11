@@ -28,8 +28,7 @@ function Home({ restaurants }) {
               <div className="w-full sm:w-1/2">
                 <RestaurantListItem
                   key={info.id}
-                  id={info.id}
-                  image={i}
+                  thumbnail={info.thumbnail}
                   name={info.name}
                   rate={info.rateAverage}
                   reviewsCount={info.reviewsCount}

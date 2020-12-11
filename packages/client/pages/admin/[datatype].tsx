@@ -144,12 +144,16 @@ function AdminDataTypePage({ data }) {
               "bg-transparent border-2 border-red-500 text-red-500 rounded-full px-6 py-2 w-full uppercase font-bold text-sm mt-7"
             )}
             onClick={async (values) => {
-              if (datatype === "restaurants") {
-                await API.removeRestaurant(dataSelected.id);
-              } else if (datatype === "reviews") {
-                await API.removeReview(dataSelected.id);
-              } else if (datatype === "users") {
-                await API.removeUser(dataSelected.id);
+              try {
+                if (datatype === "restaurants") {
+                  await API.removeRestaurant(dataSelected.id);
+                } else if (datatype === "reviews") {
+                  await API.removeReview(dataSelected.id);
+                } else if (datatype === "users") {
+                  await API.removeUser(dataSelected.id);
+                }
+              } catch (err) {
+                console.log(err);
               }
 
               setEditModalOpen(false);
