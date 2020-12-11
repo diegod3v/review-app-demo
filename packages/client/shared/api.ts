@@ -47,6 +47,7 @@ class API {
         description
         phone
         website
+        thumbnail
         reviewsCount
         rateAverage
       }
@@ -78,6 +79,7 @@ class API {
       users {
         id
         name
+        email
       }
     }
     `);
@@ -156,6 +158,99 @@ class API {
     }
     `,
       { user }
+    );
+  }
+
+  updateReview(
+    review: { date: string; comment: string; rate: number },
+    id: string
+  ) {
+    return this.queryAPI(
+      `
+    mutation($review: UpdateReviewInput!, $id: ID!) {
+      updateReview(updateReviewInput: $review, id: $id){
+        id
+      }
+    }
+    `,
+      { id, review }
+    );
+  }
+
+  updateRestaurant(
+    restaurant: {
+      name: string;
+      description: string;
+      phone: string;
+      website: string;
+      thumbnail: string;
+    },
+    id: string
+  ) {
+    return this.queryAPI(
+      `
+    mutation($restaurant:  UpdateRestaurantInput!, $id: ID!) {
+      updateRestaurant(updateRestaurantInput: $restaurant, id: $id){
+        id
+      }
+    }
+    `,
+      { id, restaurant }
+    );
+  }
+
+  updateUser(
+    user: { name: string; email: string; password: string },
+    id: string
+  ) {
+    return this.queryAPI(
+      `
+    mutation($user:  UpdateUserInput!, $id: ID!) {
+      updateUser(updateUserInput: $user, id: $id){
+        id
+      }
+    }
+    `,
+      { id, user }
+    );
+  }
+
+  removeReview(id: string) {
+    return this.queryAPI(
+      `
+    mutation($id: ID!) {
+      removeReview(id: $id){
+        id
+      }
+    }
+    `,
+      { id }
+    );
+  }
+
+  removeRestaurant(id: string) {
+    return this.queryAPI(
+      `
+    mutation($id: ID!) {
+      removeRestaurant(id: $id){
+        id
+      }
+    }
+    `,
+      { id }
+    );
+  }
+
+  removeUser(id: string) {
+    return this.queryAPI(
+      `
+    mutation($id: ID!) {
+      removeUser(id: $id){
+        id
+      }
+    }
+    `,
+      { id }
     );
   }
 }

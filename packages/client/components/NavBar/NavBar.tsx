@@ -51,6 +51,7 @@ function NavBar() {
                       const cookies = new Cookies();
                       cookies.set("token", access_token, {
                         sameSite: "strict",
+                        path: "/",
                       });
 
                       Router.push(Router.asPath);

@@ -4,9 +4,10 @@ import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
-import { UsersService } from 'src/users/users.service';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import { GqlAuthGuard } from './jwt-gql.guard';
 
 @Module({
   imports: [
@@ -14,10 +15,18 @@ import { LocalStrategy } from './local.strategy';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '120m' },
+      signOptions: { expiresIn: '999999999m' },
     }),
   ],
-  providers: [AuthService, UsersService, LocalStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: GqlAuthGuard,
+    },
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}
